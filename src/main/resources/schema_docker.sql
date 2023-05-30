@@ -3,7 +3,7 @@ CREATE SCHEMA pensioner;
 
 -- Create the SocialSecurityPensioner table under the pensioner schema
 CREATE TABLE pensioner.pensioner (
-                                                     national_number VARCHAR(10) PRIMARY KEY,
+                                                     national_number VARCHAR(12) PRIMARY KEY,
                                                      pension_number VARCHAR(10) NOT NULL,
                                                      name VARCHAR(100) NOT NULL,
                                                      date_of_birth DATE NOT NULL,
@@ -12,29 +12,28 @@ CREATE TABLE pensioner.pensioner (
 
 -- Create the FamilyMember table under the pensioner schema
 CREATE TABLE pensioner.family_member (
-                                         family_member_id SERIAL PRIMARY KEY,
-                                         pensioner_national_number VARCHAR(10) NOT NULL,
+                                         national_number VARCHAR(12) PRIMARY KEY,
                                          name VARCHAR(100) NOT NULL,
                                          date_of_birth DATE NOT NULL,
                                          gender VARCHAR(10) NOT NULL,
-                                         FOREIGN KEY (pensioner_national_number) REFERENCES pensioner.pensioner(national_number)
+                                         FOREIGN KEY (national_number) REFERENCES pensioner.social_security_pensioner(national_number)
 );
 
 -- Create the Beneficiary table under the pensioner schema
 CREATE TABLE pensioner.beneficiary (
-                                       family_member_id INT PRIMARY KEY,
+                                       family_member_national_number VARCHAR(12) PRIMARY KEY,
                                        entitlement_type VARCHAR(100) NOT NULL,
                                        entitlement_details TEXT,
-                                       FOREIGN KEY (family_member_id) REFERENCES pensioner.family_member(family_member_id)
+                                       FOREIGN KEY (family_member_national_number) REFERENCES pensioner.family_member(national_number)
 );
 
 -- Create the AnnualDeclaration table under the pensioner schema
 CREATE TABLE pensioner.annual_declaration (
                                               declaration_id SERIAL PRIMARY KEY,
-                                              pensioner_national_number VARCHAR(10) NOT NULL,
+                                              pensioner_national_number VARCHAR(12) NOT NULL,
                                               submission_date DATE NOT NULL,
                                               status VARCHAR(20) NOT NULL,
-                                              FOREIGN KEY (pensioner_national_number) REFERENCES pensioner.pensioner(national_number)
+                                              FOREIGN KEY (pensioner_national_number) REFERENCES pensioner.social_security_pensioner(national_number)
 );
 
 -- Create the Document table under the pensioner schema
